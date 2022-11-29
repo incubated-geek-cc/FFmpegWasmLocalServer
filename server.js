@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 3000;
 
 const fs = require('fs');
 const path = require('path');
@@ -22,5 +22,5 @@ app.use(express.static(path.join(__dirname, "public")))
 .get("/index.html", (req, res) => res.render("index.html"))
 .listen(PORT, () => {
   console.log(`FFmpeg App is listening on port ${PORT}!`)
-  require("openurl").open(`http://localhost:${PORT}`)
+  // require("openurl").open(`http://localhost:${PORT}`)
 });
