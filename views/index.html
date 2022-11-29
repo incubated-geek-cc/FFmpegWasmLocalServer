@@ -1,0 +1,468 @@
+<html lang='en' class='notranslate' translate='no'>
+  <head>
+      <meta name='google' content='notranslate' />
+      <meta charset='UTF-8'>
+      <meta name='description' content='An Offline Multimedia File Conversion Tool.'>
+      <meta name='keywords' content='ffmpeg,wasm API,audio-conversion'>
+      <meta name="author" content="Charmaine Chui" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <meta name='viewport' content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0' />
+      <meta http-equiv='Content-Language' content='en' />
+      <title>Media Transcoder | Built With FFmpeg for Audio & Video Files</title>
+      <meta name='msapplication-TileColor' content='#ffffff' />
+      <meta name='theme-color' content='#ffffff' />
+      <meta name='apple-mobile-web-app-status-bar-style' content='black-translucent' />
+      <meta name='apple-mobile-web-app-capable' content='yes' />
+      <meta name='mobile-web-app-capable' content='yes' />
+      <meta name='HandheldFriendly' content='True' />
+      <meta name='MobileOptimized' content='320' />  
+
+      <link rel="apple-touch-icon" sizes="76x76" href="img/favicon-76.png">
+      <link rel="apple-touch-icon" sizes="120x120" href="img/favicon-120.png">
+      <link rel="apple-touch-icon" sizes="152x152" href="img/favicon-152.png">
+      <link rel="icon" sizes="196x196" href="img/favicon-196.png">
+      <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+
+      <link href='css/bootstrap-4.5.2.min.css' rel='stylesheet' type='text/css' />
+      <link href='css/offcanvas.css' rel='stylesheet' type='text/css' />
+      <link href='css/custom.css' rel='stylesheet' type='text/css' />
+  </head>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <body>
+    <nav id='site-header' class="navbar navbar-expand-sm bg-light navbar-light border-bottom fixed-top pt-0 pb-0">
+      <a class="navbar-brand"><img src='img/logo.png' alt='logo' height='30px' /></a><div class="container-full text-muted small"><span class='emoji'>🧰</span>Productivity Tools | Built with a <abbr title='WebAssembly'>Wasm</abbr>/JavaScript Port of <a href="https://ffmpeg.org/" target="_blank">FFmpeg</a> (<a href='https://github.com/ffmpegwasm/ffmpeg.wasm' target='_blank'>FFmpeg.wasm</a>) <span class='symbol'>▷▷▷</span> <strong>For Digital-to-Digital File Format Conversions</strong> | © Copyright <span id='yearDisplay'></span>— Created by <a href="https://medium.com/@geek-cc" target="_blank"><span class='symbol'>ヾξ(</span><span class='emoji'>🎀</span><span class='symbol'>˶❛◡❛)ﾉᵀᴴᴱ ᴿᴵᴮᴮᴼᴺ ᴳᴵᴿᴸ</span></a></div>
+    </nav>
+    <div class='container-full h-100 p-1'>
+      <div class='row no-gutters'>
+        <div class='col-sm-4 p-1'>
+          <div class="card rounded-0">
+            <div class="card-header p-1">
+              <span class='symbol'>❶</span> Select media format of output file
+            </div>
+            <div class="card-body p-1">
+              <table class='table table-bordered small mb-0 w-100'>
+                <thead>
+                  <tr>
+                    <td colspan='2'>
+                      <div class="input-group input-group-sm rounded-0 w-100">
+                        <div class="input-group-prepend rounded-0">
+                          <span class="input-group-text rounded-0"><span class='emoji mr-1'>💽</span><small>Output Codec</small></span>
+                        </div>
+                        <select id='outputFileExtension' class="custom-select rounded-0"></select>
+                      </div>
+                      <p class='mb-1 mt-1'><span class='emoji'>🎞️</span> Specify file extension of processed file. E.g. mp4, wav, mp3, avi</p>
+                      <mark><span class='emoji'>📌</span> <strong>Only audio/video file formats are accepted.</strong></mark>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th colspan='2'><span class='emoji'>🔎</span> Mime Type Details</th></tr>
+                  <tr><th class='w-25'>File Extension</th><td id='FileExt'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>Mime Type</th><td id='MimeType'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>Description</th><td id='MimeDescription'><span class='symbol'>…</span></td></tr>
+                  <tr>
+                    <td colspan='2'>
+                      <button id='resetAllBtn' type='button' class='btn btn-sm btn-outline-danger rounded-circle navBtn float-right text-center symbol'>↺</button>
+                      <span class='symbol float-right mr-2 text-danger'>𝚁𝚎𝚜𝚎𝚝 𝙰𝚕𝚕 ▷</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+             </div>  
+          </div>
+        </div>
+        <div class='col-sm-4 p-1'>
+          <div class="card rounded-0">
+            <div class="card-header p-1">
+              <span class='symbol'>❷</span> Upload media File here
+            </div>
+            <div class="card-body p-1">
+              <table class='table table-bordered small mb-0 w-100'>
+                <thead>
+                  <tr>
+                    <td colspan='2'>
+                      <button id='uploadMediaBtn' type='button' class='btn btn-sm btn-light border border-primary text-primary rounded-0'><span class='emoji'>📂</span> <small>Upload File</small><input id='uploadMedia' type='file' accept='audio/*,video/*' /></button>
+                      <p class='mb-1 mt-1'><span class='emoji'>🎥</span> Only audio/video formats are accepted.</p>
+                      <mark><span class='emoji'>📌</span> <strong>Should not exceed 2.0 GB.</strong></mark>
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th colspan='2'><span class='emoji'>🔎</span> Input File Details</th></tr>
+                  <tr><th class='w-25'>File Name</th><td id='FileName'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>File Type</th><td id='FileType'><span class='symbol'>…</span></td></tr>
+                  <tr><th class='w-25'>File Size</th><td id='FileSize'><span class='symbol'>…</span></td></tr>
+                </tbody>
+                <tr>
+                  <td colspan='2' valign='middle'>
+                    <button id='saveOutput' type='button' class='btn btn-sm btn-outline-success rounded-circle navBtn float-right text-center symbol'>💾</button>
+                    <span class='symbol float-right mr-2 text-success'>𝙴𝚡𝚙𝚘𝚛𝚝 𝙿𝚛𝚘𝚌𝚎𝚜𝚜𝚎𝚍 𝙾𝚞𝚝𝚙𝚞𝚝 ▷</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-4 p-1'>
+          <div class="card rounded-0">
+            <div class="card-header p-1">
+              <span class='symbol'>❸</span> <span class='emoji'>🔌</span> Server's <code>Cross-Origin Isolated</code> status: <span id='isCrossOriginIsolated' class='emoji'>🔘</span>
+            </div>
+            <div class="card-body p-1">
+              <p class='small text-muted mb-2 mt-1'>Upon finish, only processed output with the following <code>HTML5</code> compatible formats shall rendered below for preview.</p>
+              <p class='mb-2 mt-2 text-center'><small><code>MP4</code><span class='symbol'>［🎞️］</span></small> <small><code>MP3</code><span class='symbol'>［🎧］</span></small> <small><code>WAV</code><span class='symbol'>［🎞️］</span></small> <small><code>WebM</code><span class='symbol'>［🎞️］</span></small> <small><code>Ogg</code><span class='symbol'>［🎧 | 🎞️］</span></small></p>
+              <hr>
+              <div id='mediaWrapper' class='text-center'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='row no-gutters'>
+        <div class='col-sm-12 p-1'>
+          <div id='logsOutput' class="card rounded-0">
+            <div class="card-header p-1"><span class='emoji'>📑</span> <strong>Application Logs</strong></span></div>
+            <div class="card-body p-1">
+              <div id='outputLogs' class='border w-100 h-100 p-2 small'></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src='js/polyfill.js'></script>
+    <script src='js/ie10-viewport-bug-workaround.js'></script>
+    <script src='js/bootstrap-native-v4.js'></script>
+    <script src="js/ffmpeg/ffmpeg.min.js"></script>
+    <script src="js/mimeTypes.js"></script>
+    <script>
+      if (document.readyState === "complete" || document.readyState !== "loading" && !document.documentElement.doScroll) {
+          callback();
+      } else {
+          document.addEventListener('DOMContentLoaded', async () => {
+            console.log('DOMContentLoaded');
+
+            const cards=document.querySelectorAll('.card');
+            let maxHeight;
+            for(let card of cards) {
+              if(typeof maxHeight === 'undefined' || card.clientHeight>maxHeight) {
+                maxHeight=card.clientHeight;
+              }
+            }
+            for(let card of cards) {
+              card['style']['height']=`${maxHeight}px`;
+            }
+            const logsOutput=document.getElementById('logsOutput');
+            logsOutput['style']['height']=`calc(100vh - 50px - 0.25rem - 0.25rem - 0.25rem - 0.25rem - 0.25rem - ${maxHeight}px)`;
+            const yearDisplay = document.getElementById('yearDisplay');
+            yearDisplay.innerHTML=new Date().getFullYear();
+
+
+            const outputLogs = document.getElementById('outputLogs');
+            function getCurrentDatetimeStamp() {
+                const d = new Date();
+                let datestamp = d.getFullYear() + '-' + ( (d.getMonth() + 1<10) ? ('0'+d.getMonth() + 1) : (d.getMonth() + 1) ) + '-' + ( (d.getDate()<10) ? ('0'+d.getDate()) : (d.getDate()) );
+                let timestamp = ( (d.getHours()<10) ? ('0'+d.getHours()) : (d.getHours()) ) + ':' + ( (d.getMinutes()<10) ? ('0'+d.getMinutes()) : (d.getMinutes()) ) + ':' + ( (d.getSeconds()<10) ? ('0'+d.getSeconds()) : (d.getSeconds()) );
+
+                let datetimeStr = datestamp + ' ' + timestamp;
+                return datetimeStr;
+            }
+
+            const infoNote='ɪɴғᴏ ';
+            const errNote='ᴇʀʀᴏʀ';
+            function appendDataLog(logMsg) {
+              if(typeof logMsg === 'string') {
+                let logType=infoNote;
+
+                let textClass='text-light bg-dark';
+                if(logMsg.toLowerCase().includes('fail')) {
+                  logType=errNote;
+                  textClass='text-light bg-danger';
+                  logMsg=`${logMsg}`;
+                } else if(logMsg.indexOf('[fferr] size=    ')===0) {
+                  textClass='text-white bg-primary'; // impt. action n eeded
+                  logMsg=`${logMsg}`;
+                } else if(logMsg.indexOf('[fferr]')===0 && logMsg.includes(':') && !logMsg.toLowerCase().includes('config')) {
+                  textClass='text-primary bg-light'; // file info
+                  logMsg=`${logMsg}`;
+                } else if(logMsg.indexOf('[info]')===0) {
+                  textClass='text-dark'; // better than filler
+                  logMsg=`${logMsg}`;
+                } else if(logMsg.indexOf('[fferr]')===0) {
+                  textClass='text-secondary'; // filler logs
+                  logMsg=`${logMsg}`;
+                } else if(logMsg.indexOf('[ffout]')===0) {
+                  textClass='text-white bg-success'; // impt notification. process ended.
+                  logMsg=`${logMsg}`;
+                } else {
+                  logMsg=`${logMsg}`;
+                }
+                outputLogs.insertAdjacentHTML('beforeend','<p class="mb-0 small"><span class="unicode text-dark mr-1">'+logType+'</span><span class="text-white bg-dark"><span class="symbol">【</span>'+getCurrentDatetimeStamp()+'<span class="symbol">】</span></span> <span class="'+textClass+'"> '+logMsg.trim()+' </span></p>');
+
+                let scrollTopVal=outputLogs.scrollHeight - outputLogs.clientHeight;
+                outputLogs.scroll(0, scrollTopVal);
+              }
+            }
+            function appendErrorLog(errMsg) {
+              if(typeof errMsg === 'string') {
+                outputLogs.insertAdjacentHTML('beforeend','<p class="mb-0 small"><span class="unicode text-dark mr-1">'+errNote+'</span><span class="text-white bg-dark"><span class="symbol">【</span>'+getCurrentDatetimeStamp()+'<span class="symbol">】</span></span> <span class="text-light bg-danger"> '+errMsg.trim()+' </span></p>');
+
+                let scrollTopVal=outputLogs.scrollHeight - outputLogs.clientHeight;
+                outputLogs.scroll(0, scrollTopVal);
+              }
+            }
+            console.logs = console.log.bind(console);
+            // console.dataLogs = [];
+            console.log = function() {
+                console.logs.apply(console, arguments);
+                if(Array.from(arguments).length===1 && typeof (Array.from(arguments)[0])==='string') {
+                  appendDataLog(Array.from(arguments)[0]);
+                }
+                // console.dataLogs.push(Array.from(arguments));
+            };
+            console.errors = console.error.bind(console);
+            // console.errLogs = [];
+            console.error = function(){
+                console.errors.apply(console, arguments);
+                if(Array.from(arguments).length===1 && typeof Array.from(arguments)==='object') {
+                  appendErrorLog(Array.from(arguments)[0].path[0].error.message);
+                }
+                // console.errLogs.push(Array.from(arguments)[0]);
+            };
+
+            const isCrossOriginIsolated=document.getElementById('isCrossOriginIsolated');
+            if(crossOriginIsolated) {
+              isCrossOriginIsolated.innerHTML='🟢'; // green
+            } else {
+              isCrossOriginIsolated.innerHTML='🔴'; // red
+            }
+
+            const uploadMediaBtn = document.getElementById('uploadMediaBtn');
+            const uploadMedia = document.getElementById('uploadMedia');
+            uploadMediaBtn.addEventListener('click', () => {
+                uploadMedia.click();
+            });
+            const fileNameDisplay=document.getElementById('FileName');
+            const fileTypeDisplay=document.getElementById('FileType');
+            const fileSizeDisplay=document.getElementById('FileSize');
+
+            const outputFileExtension=document.getElementById('outputFileExtension');
+            const FileExtDisplay=document.getElementById('FileExt');
+            const MimeTypeDisplay=document.getElementById('MimeType'); 
+            const MimeDescriptionDisplay=document.getElementById('MimeDescription'); 
+
+            const resetAllBtn=document.getElementById('resetAllBtn');
+            const saveOutputBtn=document.getElementById('saveOutput');
+            saveOutputBtn.disabled=true;
+
+            function triggerEvent(el, type) {
+              let e = ( ('createEvent' in document) ? document.createEvent('HTMLEvents') : document.createEventObject() );
+              if ('createEvent' in document) { 
+                e.initEvent(type, false, true);
+                el.dispatchEvent(e);
+              } else { 
+                e.eventType = type;
+                el.fireEvent('on' + e.eventType, e);
+              }
+            }
+
+            function convertBitArrtoB64(bitArr) { // Uint8Array to Base64
+               return btoa(bitArr.reduce((data, byte) => data + String.fromCharCode(byte), ''));
+            }
+
+            function readFileAsArrayBuffer(file) {
+                return new Promise((resolve, reject) => {
+                    let fileredr = new FileReader();
+                    fileredr.onload = () => resolve(fileredr.result);
+                    fileredr.onerror = () => reject(fileredr);
+                    fileredr.readAsArrayBuffer(file);
+                });
+            }
+
+            let isSelected=false;
+            let counter=0;
+            for(let mimeTypeObj of mimeTypes) {
+              let fileExt=mimeTypeObj['Extension'];
+              let fileDescription=mimeTypeObj['Description'];
+              let fileMimeType=mimeTypeObj['MIME_Types'][0];
+              let conversionWorks=mimeTypeObj['Works'];
+
+              let oOption=document.createElement('option');
+              oOption.value=fileMimeType;
+              oOption.text=`${fileDescription} [${fileExt}]`;
+
+              if(!conversionWorks) {
+                oOption.disabled=true;
+                oOption['style']['color']='#999999';
+                oOption['style']['background']='#f0f0f0';
+                oOption['style']['border']='1px solid #e1e1e1';
+              } else if(!isSelected) {
+                oOption.setAttribute('selected',true);
+
+                MimeTypeDisplay.innerHTML=fileMimeType;
+                FileExtDisplay.innerHTML=fileExt;
+                MimeDescriptionDisplay.innerHTML=fileDescription;
+                
+                isSelected=true;
+              }
+              outputFileExtension.add(oOption, counter++);
+            }
+            await new Promise((resolve, reject) => setTimeout(resolve, 100));
+
+            outputFileExtension.addEventListener('change', async(e)=> {
+              let allOptions=e.currentTarget.options;
+              let optionSelectedIndex=e.currentTarget.selectedIndex;
+              let mimeType=allOptions[optionSelectedIndex].value;
+
+              let fileExtStr=((e.currentTarget.options[optionSelectedIndex].textContent).split('[')[1]);
+              fileExtStr=fileExtStr.replaceAll(']','');
+             
+              let mimeDescriptionStr=((e.currentTarget.options[optionSelectedIndex].textContent).split('[')[0]);
+              mimeDescriptionStr=mimeDescriptionStr.trim();
+
+              MimeTypeDisplay.innerHTML=mimeType;
+              FileExtDisplay.innerHTML=fileExtStr;
+              MimeDescriptionDisplay.innerHTML=mimeDescriptionStr;
+            });
+            
+            const HTML5MediaTypes={
+              '.mp4':true,
+              '.mp3':true,
+              '.wav':true,
+              '.ogg':true
+            };
+            const mediaWrapper = document.getElementById('mediaWrapper');
+            const loadMedia = (url, type) => new Promise((resolve, reject) => {
+                var mediaObj = document.createElement(type);
+                mediaObj.addEventListener('canplay', () => resolve(mediaObj));
+                mediaObj.addEventListener('error', (err) => reject(err));
+                mediaObj.src = url;
+            });
+
+            uploadMedia.addEventListener('change', async(evt)=> {
+              outputFileExtension.disabled=true;
+              uploadMediaBtn.disabled=true;
+
+              const outputFileMimeType=MimeTypeDisplay.innerHTML;
+              const outputFileExt=FileExtDisplay.innerHTML;
+
+              const file=evt.target.files[0];
+              if (!file) return;
+              let fileName=file.name;
+              let fileType=file.type;
+              let fileSize=(file.size/1024).toFixed(2);
+
+              fileNameDisplay.innerHTML = fileName;
+              fileTypeDisplay.innerHTML = fileType;
+              fileSizeDisplay.innerHTML = fileSize+' Kb';
+
+              appendDataLog('Reading input file.');
+              let arrBuffer = await readFileAsArrayBuffer(file);
+              let uInt8Array = new Uint8Array(arrBuffer);
+
+              appendDataLog('Initialising FFmpeg.');
+              const ffmpeg = FFmpeg.createFFmpeg({
+                corePath: new URL('js/ffmpeg/ffmpeg-core.js', document.location).href,
+                workerPath: new URL('js/ffmpeg/ffmpeg-core.worker.js', document.location).href,
+                wasmPath: new URL('js/ffmpeg/ffmpeg-core.wasm', document.location).href,
+                log: true
+              });
+              await ffmpeg.load();
+              appendDataLog('FFmpeg has loaded.');
+
+              appendDataLog('Writing to input file.');
+              ffmpeg.FS('writeFile', fileName, uInt8Array);
+
+              appendDataLog('Transcoding input file to outputp file.');
+              await ffmpeg.run('-i', fileName, `output${outputFileExt}`);
+
+              appendDataLog('Retrieving output file from virtual files system.');
+              const data = ffmpeg.FS('readFile', `output${outputFileExt}`); // Uint8Array 
+
+              let b64Str = convertBitArrtoB64(data);
+              let encodedData=`data:${outputFileMimeType};base64,${b64Str}`;
+              appendDataLog('File conversion has been successfully completed.');
+
+              let mediaType='audio';
+              if(!outputFileMimeType.includes(mediaType)) {
+                mediaType='video';
+              }
+              
+              const displayedHeightVal=150;
+              if(typeof HTML5MediaTypes[outputFileExt.toLowerCase()] !== 'undefined') {
+                try {
+                  let loadedMediaObj=await loadMedia(encodedData,mediaType);
+                  loadedMediaObj.setAttribute('controls','');
+                  await new Promise((resolve, reject) => setTimeout(resolve, 100));
+
+                  if(mediaType=='video') {
+                      let mediaObjHeight=loadedMediaObj.videoHeight;
+                      let mediaObjWidth=loadedMediaObj.videoWidth;
+
+                      mediaObjHeight=loadedMediaObj.videoHeight;
+                      mediaObjWidth=loadedMediaObj.videoWidth;
+
+                      let scaleRatio=parseFloat(displayedHeightVal/mediaObjHeight);
+                      let displayedHeight=scaleRatio*mediaObjHeight;
+                      let displayedWidth=scaleRatio*mediaObjWidth;
+                      loadedMediaObj['style']['height']=`${displayedHeight}px`;
+                      loadedMediaObj['style']['width']=`${displayedWidth}px`;
+                      loadedMediaObj['style']['margin']='0 auto';
+                      await new Promise((resolve, reject) => setTimeout(resolve, 100));
+                  }
+                  mediaWrapper.appendChild(loadedMediaObj);
+                } catch(errMsg) {
+                  console.error(errMsg);
+                }
+              } else {
+                let fillerDIV=document.createElement('div');
+                fillerDIV.className='border';
+                fillerDIV['style']['height']=`${displayedHeightVal}px`;
+                fillerDIV['style']['width']=`${displayedHeightVal}px`;
+                fillerDIV['style']['margin']='0 auto';
+
+                fillerDIV.innerHTML='Content is not HTML5 compatible for display.';
+                mediaWrapper.appendChild(fillerDIV);
+              }
+
+              ffmpeg.FS('unlink', `output${outputFileExt}`);
+              await new Promise((resolve, reject) => setTimeout(resolve, 100));
+              ffmpeg.exit();
+
+              saveOutputBtn.disabled=false;
+              saveOutputBtn.value=encodedData;
+              saveOutputBtn.addEventListener('click', async()=> {
+                let dwnlnk = document.createElement('a');
+                let saveFilename = fileName.substr(0, fileName.lastIndexOf('.'));
+                dwnlnk.download = `${saveFilename}${outputFileExt}`;
+                dwnlnk.href = saveOutputBtn.value;
+                dwnlnk.click();
+              });
+            });
+
+            function resetAll() {
+              if (mediaWrapper.children.length>0) {
+                mediaWrapper.removeChild(mediaWrapper.children[0]);
+              }
+              outputFileExtension.disabled=false;
+              outputFileExtension.selectedIndex=0;
+              triggerEvent(outputFileExtension, 'change');
+
+              uploadMediaBtn.disabled=false;
+              uploadMedia.value='';
+
+              fileNameDisplay.innerHTML='<span class="symbol">…</span>';
+              fileTypeDisplay.innerHTML='<span class="symbol">…</span>';
+              fileSizeDisplay.innerHTML='<span class="symbol">…</span>';
+
+              outputLogs.innerHTML='';
+
+              saveOutputBtn.value='';
+              saveOutputBtn.disabled=true;
+            }
+            resetAllBtn.addEventListener('click', async()=> {
+              resetAll();
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
