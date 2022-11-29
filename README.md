@@ -17,9 +17,6 @@
 
 [**Web App :: Link**](https://ffmpegwasm.glitch.me/)&nbsp;&nbsp;&nbsp; [**Web App :: Backup Link**](https://ffmpegwasm.onrender.com/) 
 
-## Screenshot
-<img src='https://github.com/incubated-geek-cc/FFmpegWasmLocalServer/raw/main/public/img/webapp.jpg' width="800px" />
-
 ## Demo
 <img src='https://github.com/incubated-geek-cc/FFmpegWasmLocalServer/raw/main/public/img/demo.gif' width="800px" />
 
