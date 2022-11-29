@@ -5,6 +5,10 @@ const PORT = process.env.PORT || 3000;
 const fs = require('fs');
 const path = require('path');
 const engine = require("consolidate");
+const compression = require('compression')
+
+// compress all responses
+app.use(compression());
 
 // middleware to enable SharedBuffer to be used
 app.use(function(req, res, next) {
