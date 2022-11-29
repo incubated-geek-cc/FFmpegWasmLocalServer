@@ -1,0 +1,64 @@
+html, body {
+  padding:0;
+  margin:0;
+  overflow:hidden;
+}
+body {
+  padding-top:50px;
+  width:100vw;
+  height:100%;
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Arial,sans-serif;
+  font-size: 1rem;
+  overflow-y:auto;
+}
+input[type=file] {
+  display:none;
+}
+
+img#siteLogo {
+  height:calc(2rem - 1px);
+}
+hr {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+.unicode {
+  font-family:cambria;
+}
+.symbol {
+  font-family:segoe ui symbol;
+}
+.emoji {
+  font-family:segoe ui emoji;
+}
+#outputLogs {
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: monospace, "Consolas";
+  text-align: justify;
+  background: #f8f8ff;
+}
+
+.table td, .table th {
+    padding: 0.35rem;
+    vertical-align: middle;
+}
+
+.border-2 {
+    border-width:2px !important;
+}
+
+.border-3 {
+    border-width:3px !important;
+}
+
+.navBtn {
+  height:30px;
+  width:30px;
+}
+
+#site-header {
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+}
