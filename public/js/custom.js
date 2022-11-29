@@ -13,6 +13,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
       }
       for(let card of cards) {
         card['style']['height']=`${maxHeight}px`;
+        card['style']['overflow-y']='auto';
       }
       const logsOutput=document.getElementById('logsOutput');
       logsOutput['style']['height']=`calc(100vh - 50px - 0.25rem - 0.25rem - 0.25rem - 0.25rem - 0.25rem - ${maxHeight}px)`;
