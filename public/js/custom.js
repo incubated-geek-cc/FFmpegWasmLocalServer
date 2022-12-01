@@ -42,7 +42,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
             logType=errNote;
             textClass='text-light bg-danger';
             logMsg=`${logMsg}`;
-          } else if(logMsg.indexOf('[fferr] size=    ')===0) {
+          } else if(logMsg.indexOf('[fferr] size= ')===0) {
             textClass='text-white bg-primary'; // impt. action n eeded
             logMsg=`${logMsg}`;
           } else if(logMsg.indexOf('[fferr]')===0 && logMsg.includes(':') && !logMsg.toLowerCase().includes('config')) {
@@ -135,10 +135,10 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
 
       function readFileAsArrayBuffer(file) {
           return new Promise((resolve, reject) => {
-              let fileredr = new FileReader();
-              fileredr.onload = () => resolve(fileredr.result);
-              fileredr.onerror = () => reject(fileredr);
-              fileredr.readAsArrayBuffer(file);
+            let fileredr = new FileReader();
+            fileredr.onload = () => resolve(fileredr.result);
+            fileredr.onerror = () => reject(fileredr);
+            fileredr.readAsArrayBuffer(file);
           });
       }
 
@@ -195,6 +195,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         '.ogg':true
       };
       const mediaWrapper = document.getElementById('mediaWrapper');
+      const displayedHeightVal=150;
       const loadMedia = (url, type) => new Promise((resolve, reject) => {
           var mediaObj = document.createElement(type);
           mediaObj.addEventListener('canplay', () => resolve(mediaObj));
@@ -202,56 +203,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
           mediaObj.src = url;
       });
 
-      uploadMedia.addEventListener('change', async(evt)=> {
-        outputFileExtension.disabled=true;
-        uploadMediaBtn.disabled=true;
-
-        const outputFileMimeType=MimeTypeDisplay.innerHTML;
-        const outputFileExt=FileExtDisplay.innerHTML;
-
-        const file=evt.target.files[0];
-        if (!file) return;
-        let fileName=file.name;
-        let fileType=file.type;
-        let fileSize=(file.size/1024).toFixed(2);
-
-        fileNameDisplay.innerHTML = fileName;
-        fileTypeDisplay.innerHTML = fileType;
-        fileSizeDisplay.innerHTML = fileSize+' Kb';
-
-        appendDataLog('Reading input file.');
-        let arrBuffer = await readFileAsArrayBuffer(file);
-        let uInt8Array = new Uint8Array(arrBuffer);
-
-        appendDataLog('Initialising FFmpeg.');
-        const ffmpeg = FFmpeg.createFFmpeg({
-          corePath: new URL('js/ffmpeg/ffmpeg-core.js', document.location).href,
-          workerPath: new URL('js/ffmpeg/ffmpeg-core.worker.js', document.location).href,
-          wasmPath: new URL('js/ffmpeg/ffmpeg-core.wasm', document.location).href,
-          log: true
-        });
-        await ffmpeg.load();
-        appendDataLog('FFmpeg has loaded.');
-
-        appendDataLog('Writing to input file.');
-        ffmpeg.FS('writeFile', fileName, uInt8Array);
-
-        appendDataLog('Transcoding input file to outputp file.');
-        await ffmpeg.run('-i', fileName, `output${outputFileExt}`);
-
-        appendDataLog('Retrieving output file from virtual files system.');
-        const data = ffmpeg.FS('readFile', `output${outputFileExt}`); // Uint8Array 
-
-        let b64Str = convertBitArrtoB64(data);
-        let encodedData=`data:${outputFileMimeType};base64,${b64Str}`;
-        appendDataLog('File conversion has been successfully completed.');
-
-        let mediaType='audio';
-        if(!outputFileMimeType.includes(mediaType)) {
-          mediaType='video';
-        }
-        
-        const displayedHeightVal=150;
+      async function renderProcessedOutput(encodedData,mediaType,outputFileExt) {
         if(typeof HTML5MediaTypes[outputFileExt.toLowerCase()] !== 'undefined') {
           try {
             let loadedMediaObj=await loadMedia(encodedData,mediaType);
@@ -287,20 +239,75 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
           fillerDIV.innerHTML='Content is not HTML5 compatible for display.';
           mediaWrapper.appendChild(fillerDIV);
         }
+        return Promise.resolve('Conversion Success!');
+      }
 
-        ffmpeg.FS('unlink', `output${outputFileExt}`);
-        await new Promise((resolve, reject) => setTimeout(resolve, 100));
-        ffmpeg.exit();
+      uploadMedia.addEventListener('change', async(evt)=> {
+        outputFileExtension.disabled=true;
+        uploadMediaBtn.disabled=true;
+
+        const outputFileMimeType=MimeTypeDisplay.innerHTML;
+        const outputFileExt=FileExtDisplay.innerHTML;
+
+        const file=evt.target.files[0];
+        if (!file) return;
+        let fileName=file.name;
+        let fileType=file.type;
+        let fileSizeInKB=parseInt(file.size/1024);
+        let fileSizeInMB=((file.size/1024)/1024).toFixed(2);
+
+        fileNameDisplay.innerHTML = fileName;
+        fileTypeDisplay.innerHTML = fileType;
+        fileSizeDisplay.innerHTML = `${fileSizeInKB}<strong class="symbol">𝚔𝙱</strong> <span class="symbol">≈</span> ${fileSizeInMB}<strong class="symbol">𝙼𝙱</strong>`;
+
+        appendDataLog('Reading input file.');
+        let arrBuffer = await readFileAsArrayBuffer(file);
+        let uInt8Array = new Uint8Array(arrBuffer);
+
+        appendDataLog('Initialising FFmpeg.');
+        const ffmpeg = FFmpeg.createFFmpeg({
+          corePath: new URL('js/ffmpeg/ffmpeg-core.js', document.location).href,
+          workerPath: new URL('js/ffmpeg/ffmpeg-core.worker.js', document.location).href,
+          wasmPath: new URL('js/ffmpeg/ffmpeg-core.wasm', document.location).href,
+          log: true
+        });
+        await ffmpeg.load();
+        appendDataLog('FFmpeg has loaded.');
+
+        appendDataLog('Writing to input file.');
+        ffmpeg.FS('writeFile', fileName, uInt8Array);
+
+        appendDataLog('Transcoding input file to output file.');
+        await ffmpeg.run('-i', fileName, `output${outputFileExt}`);
+
+        appendDataLog('Retrieving output file from virtual files system.');
+        const data = ffmpeg.FS('readFile', `output${outputFileExt}`); // Uint8Array 
+
+        let b64Str = convertBitArrtoB64(data);
+        let encodedData=`data:${outputFileMimeType};base64,${b64Str}`;
+        appendDataLog('File conversion has been successfully completed.');
 
         saveOutputBtn.disabled=false;
         saveOutputBtn.value=encodedData;
-        saveOutputBtn.addEventListener('click', async()=> {
-          let dwnlnk = document.createElement('a');
-          let saveFilename = fileName.substr(0, fileName.lastIndexOf('.'));
-          dwnlnk.download = `${saveFilename}${outputFileExt}`;
-          dwnlnk.href = saveOutputBtn.value;
-          dwnlnk.click();
-        });
+
+        let mediaType='audio';
+        if(!outputFileMimeType.includes(mediaType)) {
+          mediaType='video';
+        }
+        let status=await renderProcessedOutput(encodedData,mediaType,outputFileExt);
+        appendDataLog(status);
+        
+        ffmpeg.FS('unlink', `output${outputFileExt}`);
+        await new Promise((resolve, reject) => setTimeout(resolve, 100));
+        ffmpeg.exit();
+      });
+      
+      saveOutputBtn.addEventListener('click', async()=> {
+        let dwnlnk = document.createElement('a');
+        let saveFilename = fileName.substr(0, fileName.lastIndexOf('.'));
+        dwnlnk.download = `${saveFilename}${outputFileExt}`;
+        dwnlnk.href = saveOutputBtn.value;
+        dwnlnk.click();
       });
 
       function resetAll() {
@@ -323,8 +330,10 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         saveOutputBtn.value='';
         saveOutputBtn.disabled=true;
       }
+
       resetAllBtn.addEventListener('click', async()=> {
         resetAll();
       });
+
   });
 }

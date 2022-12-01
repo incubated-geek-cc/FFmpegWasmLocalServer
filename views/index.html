@@ -29,7 +29,7 @@
   </head>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <body>
-    <nav id='site-header' class="navbar navbar-expand-sm bg-light navbar-light border-bottom fixed-top pt-0 pb-0 text-muted small"><div id='site-header-wrapper'><a class="navbar-brand pt-0 pb-0"><img src='img/logo.png' alt='logo' height='50px' /></a>Built&nbsp;with&nbsp;<a href='https://github.com/ffmpegwasm/ffmpeg.wasm' target='_blank'>FFmpeg.wasm</a><span class='symbol ml-1 mr-1'>▷</span><strong>For Digital File Conversions</strong>&nbsp;|&nbsp;©&nbsp;<span id='yearDisplay'></span>&nbsp;Created&nbsp;by&nbsp;<a href="https://medium.com/@geek-cc" target="_blank"><span class='symbol'>ヾξ(</span><span class='emoji'>🎀</span><span class='symbol'>˶❛◡❛)ﾉᵀᴴᴱ ᴿᴵᴮᴮᴼᴺ ᴳᴵᴿᴸ</span></a></div></nav>
+    <nav id='site-header' class="navbar navbar-expand-sm bg-light navbar-light border-bottom fixed-top pt-0 pb-0 text-muted small"><div id='site-header-wrapper'><a class="navbar-brand pt-0 pb-0 mr-1"><img src='img/logo.png' alt='logo' height='40px' /></a>Built&nbsp;with&nbsp;<a href='https://github.com/ffmpegwasm/ffmpeg.wasm' target='_blank'>FFmpeg.wasm</a><span class='symbol ml-1 mr-1'>▷</span><strong>For Digital File Conversions</strong>&nbsp;|&nbsp;©&nbsp;<span id='yearDisplay'></span>&nbsp;Created&nbsp;by&nbsp;<a href="https://medium.com/@geek-cc" target="_blank"><span class='symbol'>ヾξ(</span><span class='emoji'>🎀</span><span class='symbol'>˶❛◡❛)ﾉᵀᴴᴱ ᴿᴵᴮᴮᴼᴺ ᴳᴵᴿᴸ</span></a></div></nav>
 
     <div class='container-full h-100 p-1'>
       <div class='row no-gutters'>
@@ -49,8 +49,9 @@
                         </div>
                         <select id='outputFileExtension' class="custom-select rounded-0"></select>
                       </div>
-                      <p class='mb-1 mt-1'><span class='emoji'>🎞️</span> Specify file extension of processed file. E.g. mp4, wav, mp3, avi</p>
-                      <mark><span class='emoji'>📌</span> <strong>Only audio/video file formats are accepted.</strong></mark>
+                      <p class='mb-1 mt-1'><span class='emoji'>📀</span> Specify file extension of processed output such as: <code class='pl-1 pr-1'>mp4</code><code class='pl-1 pr-1'>mp3</code><code class='pl-1 pr-1'>avi</code></p>
+
+                      <mark><span class='emoji'>⚠️</span> Some option(s) are still <strong class='symbol'>𝚆𝙸𝙿 </strong> and hence unselectable.</mark>
                     </td>
                   </tr>
                 </thead>
@@ -81,8 +82,8 @@
                   <tr>
                     <td colspan='2'>
                       <button id='uploadMediaBtn' type='button' class='btn btn-sm btn-light border border-primary text-primary rounded-0'><span class='emoji'>📂</span> <small>Upload File</small><input id='uploadMedia' type='file' accept='audio/*,video/*' /></button>
-                      <p class='mb-1 mt-1'><span class='emoji'>🎥</span> Only audio/video formats are accepted.</p>
-                      <mark><span class='emoji'>📌</span> <strong>Should not exceed 2.0 GB.</strong></mark>
+                      <p class='mb-1 mt-1'> Only <span class='emoji'>🎵</span> Audio & <span class='emoji'>🎞️</span> Video file formats are accepted.</p>
+                      <mark><span class='emoji'>⚠️</span> Note that upload should not exceed 2.0 <strong class='symbol'>𝙶𝙱</strong>.</mark>
                     </td>
                   </tr>
                 </thead>
@@ -109,7 +110,7 @@
             </div>
             <div class="card-body p-1">
               <p class='small text-muted mb-2 mt-1'>Upon finish, only processed output with the following <code>HTML5</code> compatible formats shall rendered below for preview.</p>
-              <p class='mb-2 mt-2 text-center'><small><code>MP4</code><span class='symbol'>［🎞️］</span></small> <small><code>MP3</code><span class='symbol'>［🎧］</span></small> <small><code>WAV</code><span class='symbol'>［🎞️］</span></small> <small><code>WebM</code><span class='symbol'>［🎞️］</span></small> <small><code>Ogg</code><span class='symbol'>［🎧 | 🎞️］</span></small></p>
+              <p class='mb-2 mt-2 text-center'><small><code>mp4</code><span class='symbol'>［🎞️］</span></small> <small><code>mp3</code><span class='symbol'>［🎧］</span></small> <small><code>wav</code><span class='symbol'>［🎞️］</span></small> <small><code>webm</code><span class='symbol'>［🎞️］</span></small> <small><code>ogg</code><span class='symbol'>［🎧 | 🎞️］</span></small></p>
               <hr>
               <div id='mediaWrapper' class='text-center'></div>
             </div>

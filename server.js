@@ -26,5 +26,4 @@ app.use(express.static(path.join(__dirname, "public")))
 .get("/index.html", (req, res) => res.render("index.html"))
 .listen(PORT, () => {
   console.log(`FFmpeg App is listening on port ${PORT}!`)
-  // require("openurl").open(`http://localhost:${PORT}`)
 });
