@@ -170,7 +170,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         }
         outputFileExtension.add(oOption, counter++);
       }
-      await new Promise((resolve, reject) => setTimeout(resolve, 100));
+      await new Promise((resolve, reject) => setTimeout(resolve, 50));
 
       outputFileExtension.addEventListener('change', async(e)=> {
         let allOptions=e.currentTarget.options;
@@ -208,7 +208,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
           try {
             let loadedMediaObj=await loadMedia(encodedData,mediaType);
             loadedMediaObj.setAttribute('controls','');
-            await new Promise((resolve, reject) => setTimeout(resolve, 100));
+            await new Promise((resolve, reject) => setTimeout(resolve, 50));
 
             if(mediaType=='video') {
                 let mediaObjHeight=loadedMediaObj.videoHeight;
@@ -223,7 +223,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
                 loadedMediaObj['style']['height']=`${displayedHeight}px`;
                 loadedMediaObj['style']['width']=`${displayedWidth}px`;
                 loadedMediaObj['style']['margin']='0 auto';
-                await new Promise((resolve, reject) => setTimeout(resolve, 100));
+                await new Promise((resolve, reject) => setTimeout(resolve, 50));
             }
             mediaWrapper.appendChild(loadedMediaObj);
           } catch(errMsg) {
@@ -296,9 +296,9 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         }
         let status=await renderProcessedOutput(encodedData,mediaType,outputFileExt);
         appendDataLog(status);
-        
+
         ffmpeg.FS('unlink', `output${outputFileExt}`);
-        await new Promise((resolve, reject) => setTimeout(resolve, 100));
+        await new Promise((resolve, reject) => setTimeout(resolve, 50));
         ffmpeg.exit();
       });
       

@@ -5,7 +5,7 @@
 **Transcoding Audio/Video multimedia files in-browser with minimal installation required!**
 <div align="left">
 	<ol>
-		<li>✍ Article at: ---</li>
+		<li>✍ Article at: <a href='https://medium.com/weekly-webtips/how-to-transcode-audio-video-files-with-ffmpeg-in-javascript-7edfedf7f6d4' target='_blank'>How to Transcode Audio & Video Files with FFmpeg in JavaScript</a></li>
 	</ol>
 </div>
 </div>
