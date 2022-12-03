@@ -154,12 +154,13 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         oOption.value=fileMimeType;
         oOption.text=`${fileDescription} [${fileExt}]`;
 
-        if(!conversionWorks) {
-          oOption.disabled=true;
-          oOption['style']['color']='#999999';
-          oOption['style']['background']='#f0f0f0';
-          oOption['style']['border']='1px solid #e1e1e1';
-        } else if(!isSelected) {
+        // if(!conversionWorks) {
+        //   oOption.disabled=true;
+        //   oOption['style']['color']='#999999';
+        //   oOption['style']['background']='#f0f0f0';
+        //   oOption['style']['border']='1px solid #e1e1e1';
+        // } else
+        if(!isSelected) {
           oOption.setAttribute('selected',true);
 
           MimeTypeDisplay.innerHTML=fileMimeType;
@@ -260,10 +261,6 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         fileTypeDisplay.innerHTML = fileType;
         fileSizeDisplay.innerHTML = `${fileSizeInKB}<strong class="symbol">𝚔𝙱</strong> <span class="symbol">≈</span> ${fileSizeInMB}<strong class="symbol">𝙼𝙱</strong>`;
 
-        appendDataLog('Reading input file.');
-        let arrBuffer = await readFileAsArrayBuffer(file);
-        let uInt8Array = new Uint8Array(arrBuffer);
-
         appendDataLog('Initialising FFmpeg.');
         const ffmpeg = FFmpeg.createFFmpeg({
           corePath: new URL('js/ffmpeg/ffmpeg-core.js', document.location).href,
@@ -274,12 +271,25 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         await ffmpeg.load();
         appendDataLog('FFmpeg has loaded.');
 
+        appendDataLog('Reading input file.');
+        let arrBuffer = await readFileAsArrayBuffer(file);
+        let uInt8Array = new Uint8Array(arrBuffer);
+
         appendDataLog('Writing to input file.');
         ffmpeg.FS('writeFile', fileName, uInt8Array);
 
         appendDataLog('Transcoding input file to output file.');
         await ffmpeg.run('-i', fileName, `output${outputFileExt}`);
 
+        // appendDataLog('Check if output file exists in the virtual files system.');
+        // let toContinue = true;
+        // while(toContinue) {
+        //   const fileExists = ffmpeg.FS('readdir', '/').includes(`output${outputFileExt}`);
+        //   console.log(fileExists);
+        //   if(fileExists) {
+        //     toContinue=false;
+        //   }
+        // }
         appendDataLog('Retrieving output file from virtual files system.');
         const data = ffmpeg.FS('readFile', `output${outputFileExt}`); // Uint8Array 
 
@@ -301,7 +311,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         await new Promise((resolve, reject) => setTimeout(resolve, 50));
         ffmpeg.exit();
       });
-      
+
       saveOutputBtn.addEventListener('click', async()=> {
         let dwnlnk = document.createElement('a');
 
