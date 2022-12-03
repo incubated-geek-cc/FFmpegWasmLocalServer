@@ -304,7 +304,10 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
       
       saveOutputBtn.addEventListener('click', async()=> {
         let dwnlnk = document.createElement('a');
+        
         let fileName = fileNameDisplay.innerHTML;
+        let outputFileExt = FileExtDisplay.innerHTML;
+
         let saveFilename = fileName.substr(0, fileName.lastIndexOf('.'));
         dwnlnk.download = `${saveFilename}${outputFileExt}`;
         dwnlnk.href = saveOutputBtn.value;
