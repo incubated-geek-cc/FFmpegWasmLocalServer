@@ -70,3 +70,7 @@ hr {
   overflow-y: hidden;
   overflow-x: auto;
 }
+
+#FileName {
+  overflow-wrap: anywhere;
+}

@@ -30,7 +30,6 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
           let datetimeStr = datestamp + ' ' + timestamp;
           return datetimeStr;
       }
-
       const infoNote='ɪɴғᴏ ';
       const errNote='ᴇʀʀᴏʀ';
       function appendDataLog(logMsg) {
@@ -40,9 +39,9 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
           let textClass='text-light bg-dark';
           if(logMsg.toLowerCase().includes('fail')) {
             logType=errNote;
-            textClass='text-light bg-danger';
+            textClass='text-light bg-danger'; 
             logMsg=`${logMsg}`;
-          } else if(logMsg.indexOf('[fferr] size= ')===0) {
+          } else if(logMsg.indexOf('[fferr] size= ')===0 || logMsg.indexOf('[fferr] frame= ')===0) {
             textClass='text-white bg-primary'; // impt. action n eeded
             logMsg=`${logMsg}`;
           } else if(logMsg.indexOf('[fferr]')===0 && logMsg.includes(':') && !logMsg.toLowerCase().includes('config')) {
@@ -259,7 +258,7 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
 
         fileNameDisplay.innerHTML = fileName;
         fileTypeDisplay.innerHTML = fileType;
-        fileSizeDisplay.innerHTML = `${fileSizeInKB}<strong class="symbol">𝚔𝙱</strong> <span class="symbol">≈</span> ${fileSizeInMB}<strong class="symbol">𝙼𝙱</strong>`;
+        fileSizeDisplay.innerHTML = `${fileSizeInKB} <strong class="symbol">𝚔𝙱</strong> <span class="symbol">≈</span> ${fileSizeInMB} <strong class="symbol">𝙼𝙱</strong>`;
 
         appendDataLog('Initialising FFmpeg.');
         const ffmpeg = FFmpeg.createFFmpeg({
