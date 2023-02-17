@@ -2,22 +2,31 @@
   <img src='https://github.com/incubated-geek-cc/FFmpegWasmLocalServer/raw/main/public/img/logo.png' width='96' height='96' alt='logo' />
   <h1 dir="auto">FFmpeg.Wasm In-Browser Setup</h1>
 
-**Transcoding Audio/Video multimedia files in-browser with minimal installation required!**
+**📀 Transcoding Audio/Video multimedia files in-browser with minimal installation required!**
+
 <div align="left">
-	<ol>
-		<li>✍ Article at: <a href='https://medium.com/weekly-webtips/how-to-transcode-audio-video-files-with-ffmpeg-in-javascript-7edfedf7f6d4' target='_blank'>How to Transcode Audio & Video Files with FFmpeg in JavaScript</a></li>
-	</ol>
+
+### 📌 Features
+
+</div>
+<div align="left">
+<ul>
+	<li>Convert 🎵 audio files to other selectable multimedia formats in dropdown list</li>
+	<li>Convert 🎞️Video clips to other selectable multimedia formats in dropdown list</li>
+	<li>Export transcoded multimedia output</li>
+</ul>
 </div>
 </div>
-📌 Project Status
-* Currently still WIP. Certain media encodings are presently not supported in-browser.
 
-💿 Enables custom selection of Mime/Type for both 🎵Audio and 🎞️Video files. Single file uploads only.
+### 🌟 Try it yourself
+[**Live Demo :: Link**](https://ffmpegwasm.glitch.me/) <br>
+[**Live Demo :: Backup Link**](https://ffmpegwasm.onrender.com/)
 
-[**Web App :: Link**](https://ffmpegwasm.glitch.me/)&nbsp;&nbsp;&nbsp; [**Web App :: Backup Link**](https://ffmpegwasm.onrender.com/) 
+### ✍ Read related post here
+[**Article :: Link**](https://medium.com/weekly-webtips/how-to-transcode-audio-video-files-with-ffmpeg-in-javascript-7edfedf7f6d4)
 
-## Demo
-<img src='https://github.com/incubated-geek-cc/FFmpegWasmLocalServer/raw/main/public/img/demo.gif' width="800px" />
+## Preview
+<img src='https://github.com/incubated-geek-cc/FFmpegWasmLocalServer/raw/main/public/img/preview.png' width="800px" />
 
 ---
 
