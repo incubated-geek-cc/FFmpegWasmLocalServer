@@ -23,7 +23,7 @@
 [**Live Demo :: Backup Link**](https://ffmpegwasm.onrender.com/)
 
 ### ✍ Read related post here
-[**Article :: Link**](https://medium.com/weekly-webtips/how-to-transcode-audio-video-files-with-ffmpeg-in-javascript-7edfedf7f6d4)
+[**Article :: Link :: How to Transcode Audio & Video Files with FFmpeg in JavaScript**](https://medium.com/weekly-webtips/how-to-transcode-audio-video-files-with-ffmpeg-in-javascript-7edfedf7f6d4)
 
 ### 👀 Preview
 <img src='https://github.com/incubated-geek-cc/FFmpegWasmLocalServer/raw/main/public/img/preview.png' width="800px" />
