@@ -128,9 +128,8 @@ if (document.readyState === "complete" || document.readyState !== "loading" && !
         }
       }
 
-      function convertBitArrtoB64(bitArr) { // Uint8Array to Base64
-         return btoa(bitArr.reduce((data, byte) => data + String.fromCharCode(byte), ''));
-      }
+      // Uint8Array to Base64
+      const convertBitArrtoB64 = (bitArr) => ( btoa( bitArr.reduce((data, byte) => data + String.fromCharCode(byte), '') ) );
 
       function readFileAsArrayBuffer(file) {
           return new Promise((resolve, reject) => {
